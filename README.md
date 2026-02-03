@@ -12,6 +12,7 @@ This adapter sends JENNIFER EVENT notifications to PagerDuty using the [Events A
 
 ## Configuration
 
+**Class Name**: `com.aries.pagerduty.PagerDutyAdapter`
 **Adapter ID**: `pagerduty`
 
 After installing the adapter `jar` file into your JENNIFER View Server, configure the following properties in the Adapter settings menu.
