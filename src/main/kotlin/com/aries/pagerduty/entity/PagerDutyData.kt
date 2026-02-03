@@ -33,24 +33,31 @@ class PagerDutyData(
         payload.put("source", buildSource(event))
         payload.put("severity", mapSeverity(event))
         payload.put("timestamp", sdf.format(Date(event.time)))
-        payload.put("component", event.serviceName)
+        payload.put("component", event.instanceName)
         payload.put("group", event.domainName)
         payload.put("class", event.errorType)
 
         // --- 3. Custom Details (inside Payload) ---
+        // Grouped for better readability (Option A style)
         val customDetails = JSONObject()
-        customDetails.put("domainId", event.domainId)
-        customDetails.put("domainName", event.domainName)
-        customDetails.put("instanceId", event.instanceId)
-        customDetails.put("instanceName", event.instanceName)
-        customDetails.put("serviceName", event.serviceName)
-        customDetails.put("errorType", event.errorType)
-        customDetails.put("eventLevel", event.eventLevel)
-        customDetails.put("txid", event.txid)
+        
+        val location = JSONObject()
+        location.put("Domain", event.domainName)
+        location.put("Instance", event.instanceName)
+        location.put("Instance ID", event.instanceId)
+        
+        val context = JSONObject()
+        context.put("Service", event.serviceName)
+        context.put("Error Type", event.errorType)
+        context.put("Level", event.eventLevel)
+        context.put("Transaction ID", event.txid)
         
         if (event.metricsName != null && event.metricsName.isNotEmpty()) {
-            customDetails.put("metrics", event.metricsName.toString())
+            context.put("Metrics", event.metricsName.toString())
         }
+
+        customDetails.put("Location", location)
+        customDetails.put("Context", context)
 
         payload.put("custom_details", customDetails)
         this.put("payload", payload)
@@ -66,7 +73,7 @@ class PagerDutyData(
             val links = org.json.JSONArray()
             val linkObj = JSONObject()
             linkObj.put("href", linkUrl)
-            linkObj.put("text", "View Transaction in JENNIFER")
+            linkObj.put("text", "View in JENNIFER5")
             links.put(linkObj)
             
             this.put("links", links)
@@ -93,18 +100,17 @@ class PagerDutyData(
     private fun buildDedupKey(event: EventData): String {
         // Unique key to group similar events.
         // Format: domainId:instanceId:errorType:serviceName
-        // If serviceName is dynamic (URL), this might group too broadly or narrowly.
-        // Using metricsName might be safer if available, but serviceName is standard for errors.
         return "${event.domainId}:${event.instanceId}:${event.errorType}:${event.serviceName}"
     }
 
     private fun buildSummary(event: EventData): String {
-        val baseMsg = "[${event.eventLevel}] ${event.errorType} at ${event.instanceName}"
-        return if (!event.message.isNullOrBlank()) {
-            "$baseMsg - ${event.message}"
-        } else {
-            baseMsg
-        }
+        // Option A: Clean Standard
+        // Format: ErrorType: Message (InstanceName)
+        val errorType = event.errorType
+        val instance = event.instanceName
+        val message = if (!event.message.isNullOrBlank()) event.message else "No error message"
+        
+        return "$errorType: $message ($instance)"
     }
 
     private fun buildSource(event: EventData): String {
