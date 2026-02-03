@@ -42,14 +42,14 @@ class PagerDutyData(
         val customDetails = JSONObject()
         
         val location = JSONObject()
-        location.put("Domain", event.domainName)
-        location.put("Instance", event.instanceName)
+        location.put("Domain Name", event.domainName)
+        location.put("Instance Name", event.instanceName)
         location.put("Instance ID", event.instanceId)
         
         val context = JSONObject()
-        context.put("Service", event.serviceName)
+        context.put("Service Name", event.serviceName)
         context.put("Error Type", event.errorType)
-        context.put("Level", event.eventLevel)
+        context.put("Event Level", event.eventLevel)
         context.put("Transaction ID", event.txid)
         
         if (event.metricsName != null && event.metricsName.isNotEmpty()) {
