@@ -24,7 +24,7 @@ class PagerDutyData(
         this.put("dedup_key", buildDedupKey(event))
         
         // Optional client info
-        this.put("client", "JENNIFER View Adapter")
+        this.put("client", "JENNIFER5")
         this.put("client_url", prop.jenniferUrl ?: "https://www.jennifersoft.com")
 
         // --- 2. Payload Object ---
