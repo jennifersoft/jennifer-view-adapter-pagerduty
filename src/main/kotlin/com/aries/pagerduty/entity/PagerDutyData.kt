@@ -48,8 +48,8 @@ class PagerDutyData(
         customDetails.put("eventLevel", event.eventLevel)
         customDetails.put("txid", event.txid)
         
-        if (event.metrics != null && event.metrics.isNotEmpty()) {
-            customDetails.put("metrics", event.metrics.toString())
+        if (event.metricsName != null && event.metricsName.isNotEmpty()) {
+            customDetails.put("metrics", event.metricsName.toString())
         }
 
         payload.put("custom_details", customDetails)
@@ -113,19 +113,17 @@ class PagerDutyData(
 
     companion object {
         fun encodeURIComponent(s: String): String {
-            var result: String? = null
-            result = try {
+            return try {
                 URLEncoder.encode(s, "UTF-8")
-                    .replace("\\+".toRegex(), "%20")
-                    .replace("\\%21".toRegex(), "!")
-                    .replace("\\%27".toRegex(), "'")
-                    .replace("\\%28".toRegex(), "(")
-                    .replace("\\%29".toRegex(), ")")
-                    .replace("\\%7E".toRegex(), "~")
+                    .replace("+", "%20")
+                    .replace("%21", "!")
+                    .replace("%27", "'")
+                    .replace("%28", "(")
+                    .replace("%29", ")")
+                    .replace("%7E", "~")
             } catch (e: UnsupportedEncodingException) {
                 s
             }
-            return result!!
         }
     }
 }

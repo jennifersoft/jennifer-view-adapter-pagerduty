@@ -31,3 +31,8 @@ replay_pid*
 
 # Sisyphus
 .sisyphus/
+
+# IntelliJ
+.idea
+
+target
