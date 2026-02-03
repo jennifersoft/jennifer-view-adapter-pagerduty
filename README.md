@@ -37,7 +37,7 @@ This is the **Routing Key** for your PagerDuty Service. To obtain this key:
 
 #### `jennifer_url` (Optional)
 The public URL of your JENNIFER View Server.
-- If configured, the adapter will add a **"View Transaction in JENNIFER"** link to the PagerDuty alert.
+- If configured, the adapter will add a **"Transaction Analysis"** link to the PagerDuty alert.
 - Clicking this link opens the **X-View Analysis** popup for the specific transaction ID and time associated with the event.
 - **Format**: `protocol://domain:port` (e.g., `http://10.0.0.1:7900` or `https://jennifer.mycompany.com`)
 

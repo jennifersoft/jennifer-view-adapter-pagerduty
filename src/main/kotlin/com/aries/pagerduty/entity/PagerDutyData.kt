@@ -73,7 +73,7 @@ class PagerDutyData(
             val links = org.json.JSONArray()
             val linkObj = JSONObject()
             linkObj.put("href", linkUrl)
-            linkObj.put("text", "View in JENNIFER5")
+            linkObj.put("text", "Transaction Analysis")
             links.put(linkObj)
             
             this.put("links", links)
